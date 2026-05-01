@@ -7,17 +7,18 @@ export declare namespace GCF {
 
     interface Repo {
         /**
-         * get object content for the full object_id given
+         * Reads the raw object identified by its full SHA-1 object id.
          */
         getObject(object_id: string): Promise<IObject>;
 
         /**
-         * find the commit for the given branch name, tag, etc.
+         * Resolves the commit referenced by a branch name, tag, short sha,
+         * or any other revision spec accepted by `git rev-parse`.
          */
         getCommit(commit_id: string): Promise<Commit>;
 
         /**
-         * get a list of objects for the full object_id given
+         * Reads the tree object identified by its full SHA-1 object id.
          */
         getTree(object_id: string): Promise<Tree>;
     }
