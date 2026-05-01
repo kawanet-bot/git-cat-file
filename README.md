@@ -31,7 +31,7 @@ The bundled CLI commands are also available as `git` subcommands when `node_modu
 
 ```sh
 npm install git-cat-file
-export PATH=node_modules/.bin:$PATH
+export PATH="node_modules/.bin:$PATH"
 git cat-file-js [-t | -p] <object>
 git ls-tree-js [<options>] <tree-ish> [<path>...]
 git rev-parse-js <args>...
