@@ -1,5 +1,10 @@
 #!/usr/bin/env bash -v
 
+# Ignore the host's global git config so any commit signing settings
+# (commit.gpgsign etc.) do not contaminate the test fixture. Tracked in
+# kawanet-labs/m4-labs-code#88.
+export GIT_CONFIG_GLOBAL=/dev/null
+
 cd $(dirname $0)/..
 /bin/rm -fr repo/repo2
 mkdir -p repo/repo2
