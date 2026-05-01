@@ -165,8 +165,6 @@ export declare namespace GCF {
         type: string;
         tagger: string;
         tag: string;
-        /** See `CommitMeta.gpgsig`. Annotated tags can be SSH/GPG signed too. */
-        gpgsig: string;
     }
 
     /**
