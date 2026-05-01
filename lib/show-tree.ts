@@ -12,6 +12,7 @@ import type {GCF} from "../types/git-cat-file.d.ts";
 export async function showEnties(tree: GCF.Tree, path?: string): Promise<void> {
     if (path) {
         tree = await tree.getTree(path);
+        if (!tree) return;
     } else {
         path = "";
     }
