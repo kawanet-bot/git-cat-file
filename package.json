@@ -8,6 +8,9 @@
     "git-ls-tree-js": "bin/git-ls-tree-js.js",
     "git-rev-parse-js": "bin/git-rev-parse-js.js"
   },
+  "bugs": {
+    "url": "https://github.com/kawanet/git-cat-file/issues"
+  },
   "dependencies": {
     "async-cache-queue": "^0.2.6",
     "process.argv": "^0.6.1"
@@ -28,6 +31,7 @@
     "lib/*.js",
     "types/*.d.ts"
   ],
+  "homepage": "https://github.com/kawanet/git-cat-file#readme",
   "keywords": [
     "cat-file",
     "git",
