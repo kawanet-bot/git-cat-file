@@ -3,12 +3,12 @@
  */
 
 import {promises as fs} from "fs";
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 
-import {shortCache} from "./cache";
-import type {ObjStore} from "./obj-store";
-import {Commit} from "./commit";
-import {Tag} from "./tag";
+import {shortCache} from "./cache.ts";
+import type {ObjStore} from "./obj-store.ts";
+import {Commit} from "./commit.ts";
+import {Tag} from "./tag.ts";
 
 interface RefCommit {
     ref: string;
@@ -18,8 +18,10 @@ interface RefCommit {
 const isObjectId = (oid: string) => (oid && /^[0-9a-f]{40}$/i.test(oid));
 
 export class Ref {
-    constructor(protected readonly root: string) {
-        //
+    protected readonly root: string;
+
+    constructor(root: string) {
+        this.root = root;
     }
 
     async findCommitId(revision: string, store: ObjStore): Promise<string> {

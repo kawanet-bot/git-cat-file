@@ -2,9 +2,9 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
-import type {ObjStore} from "./obj-store";
-import {ObjItem} from "./obj-item";
+import type {GCF} from "../types/git-cat-file.d.ts";
+import type {ObjStore} from "./obj-store.ts";
+import {ObjItem} from "./obj-item.ts";
 
 export class Tag extends ObjItem<GCF.TagMeta> implements GCF.Tag {
     constructor(obj: GCF.IObject, store: ObjStore) {

@@ -2,17 +2,21 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 
-import {getFileMode} from "./file-mode";
-import type {ObjStore} from "./obj-store";
+import {getFileMode} from "./file-mode.ts";
+import type {ObjStore} from "./obj-store.ts";
 
 export class Tree implements GCF.Tree {
+    private readonly obj: GCF.IObject;
+    protected readonly store: ObjStore;
 
-    constructor(private readonly obj: GCF.IObject, protected readonly store: ObjStore) {
+    constructor(obj: GCF.IObject, store: ObjStore) {
         if (obj.type !== "tree") {
             throw new TypeError(`Invalid tree object: ${obj.oid} (${obj.type})`)
         }
+        this.obj = obj;
+        this.store = store;
     }
 
     getId(): string {

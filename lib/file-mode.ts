@@ -2,15 +2,15 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 
-const enum OctalMode {
-    file = 0o100644,
-    executable = 0o100755,
-    symlink = 0o120000,
-    submodule = 0o160000,
-    directory = 0o040000,
-}
+const OctalMode = {
+    file: 0o100644,
+    executable: 0o100755,
+    symlink: 0o120000,
+    submodule: 0o160000,
+    directory: 0o040000,
+} as const;
 
 class FileMode implements GCF.FileMode {
     isFile: boolean; // 100644
@@ -18,8 +18,10 @@ class FileMode implements GCF.FileMode {
     isSymlink: boolean; // 120000
     isSubmodule: boolean; // 160000
     isDirectory: boolean; // 040000
+    private readonly mode: number;
 
-    constructor(private readonly mode: number) {
+    constructor(mode: number) {
+        this.mode = mode;
         switch (mode) {
             case OctalMode.executable:
             case OctalMode.executable & 0o777:

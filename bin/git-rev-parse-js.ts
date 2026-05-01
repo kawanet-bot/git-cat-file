@@ -2,12 +2,15 @@
 
 /**
  * https://github.com/kawanet/git-cat-file
+ *
+ * Executed directly by Node via its built-in TypeScript type-stripping
+ * (Node >= 22). No bundling step is involved for CLI entry points.
  */
 
-import {openLocalRepo} from "..";
-import {promises as fs} from "fs";
+import {promises as fs} from "node:fs";
 
-import {parseOptions} from "../lib/cli-lib";
+import {parseOptions} from "../lib/cli-lib.ts";
+import {openLocalRepo} from "../lib/index.ts";
 
 const longParams = {
     help: true,
@@ -61,4 +64,4 @@ function showHelp() {
     process.stderr.write(`  git-rev-parse-js [-C path] <args>...\n`);
 }
 
-if (!module.parent) CLI(process.argv.slice(2)).catch(console.error);
+CLI(process.argv.slice(2)).catch(console.error);

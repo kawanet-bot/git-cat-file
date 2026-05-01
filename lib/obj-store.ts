@@ -2,13 +2,13 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 import {promises as fs} from "fs";
 
-import {shortCache} from "./cache";
-import {Loose} from "./loose";
-import {Pack} from "./pack";
-import {Ref} from "./ref";
+import {shortCache} from "./cache.ts";
+import {Loose} from "./loose.ts";
+import {Pack} from "./pack.ts";
+import {Ref} from "./ref.ts";
 
 /**
  * https://github.com/kawanet/git-cat-file
@@ -20,8 +20,10 @@ export class ObjStore {
     private readonly loose: Loose;
     private readonly pack: { [name: string]: Pack } = {};
     private readonly ref: Ref;
+    private readonly root: string;
 
-    constructor(private readonly root: string) {
+    constructor(root: string) {
+        this.root = root;
         this.loose = new Loose(root);
         this.ref = new Ref(root);
     }

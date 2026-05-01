@@ -1,10 +1,16 @@
-#!/usr/bin/env mocha -R spec
+/**
+ * https://github.com/kawanet/git-cat-file
+ */
 
-import {strict as assert} from "assert";
-import {openLocalRepo} from "..";
+import {strict as assert} from "node:assert";
+import {fileURLToPath} from "node:url";
+import {describe, it} from "node:test";
 
-const BASE = __dirname.replace(/\/[^/]+\/?$/, "");
-const TITLE = __filename.split("/").pop();
+import {openLocalRepo} from "../lib/index.ts";
+
+const HERE = fileURLToPath(new URL(".", import.meta.url));
+const TITLE = fileURLToPath(import.meta.url).split("/").pop();
+const BASE = HERE.replace(/\/[^/]+\/?$/, "");
 
 describe(TITLE, () => {
     it(`Repo`, async () => {

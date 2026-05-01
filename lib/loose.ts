@@ -2,16 +2,18 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 
 import {promises as fs} from "fs";
 import {inflateSync} from "zlib";
 
-import {shortCache} from "./cache";
+import {shortCache} from "./cache.ts";
 
 export class Loose {
-    constructor(protected readonly root: string) {
-        //
+    protected readonly root: string;
+
+    constructor(root: string) {
+        this.root = root;
     }
 
     private readdir = shortCache((first: string) => fs.readdir(`${this.root}/objects/${first}`));
@@ -47,9 +49,10 @@ class LooseObject {
     private buf: Promise<Buffer>;
     private offset: Promise<number>;
     private type: Promise<GCF.ObjType>;
+    private readonly path: string;
 
-    constructor(private readonly path: string) {
-        //
+    constructor(path: string) {
+        this.path = path;
     }
 
     private getRaw(): Promise<Buffer> {

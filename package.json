@@ -4,9 +4,9 @@
   "version": "0.3.0",
   "author": "@kawanet",
   "bin": {
-    "git-cat-file-js": "bin/git-cat-file-js.js",
-    "git-ls-tree-js": "bin/git-ls-tree-js.js",
-    "git-rev-parse-js": "bin/git-rev-parse-js.js"
+    "git-cat-file-js": "bin/git-cat-file-js.ts",
+    "git-ls-tree-js": "bin/git-ls-tree-js.ts",
+    "git-rev-parse-js": "bin/git-rev-parse-js.ts"
   },
   "bugs": {
     "url": "https://github.com/kawanet/git-cat-file/issues"
@@ -16,19 +16,32 @@
     "process.argv": "^0.6.1"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.10",
+    "@rollup/plugin-node-resolve": "^16.0.2",
+    "@rollup/plugin-sucrase": "^5.0.2",
     "@types/node": "^24.0.0",
-    "mocha": "^11.0.0",
+    "rollup": "^4.52.4",
     "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=22"
   },
+  "exports": {
+    ".": {
+      "require": "./dist/git-cat-file.cjs",
+      "import": {
+        "types": "./types/git-cat-file.d.ts",
+        "default": "./dist/git-cat-file.mjs"
+      }
+    }
+  },
   "files": [
     "LICENSE",
     "README.md",
-    "bin/*.js",
-    "lib/*.js",
+    "bin/*.ts",
+    "dist/git-cat-file.cjs",
+    "dist/git-cat-file.mjs",
+    "dist/package.json",
+    "lib/*.ts",
     "types/*.d.ts"
   ],
   "homepage": "https://github.com/kawanet/git-cat-file#readme",
@@ -41,16 +54,18 @@
     "rev-parse"
   ],
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "./dist/git-cat-file.cjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kawanet/git-cat-file.git"
   },
   "scripts": {
-    "build": "./node_modules/.bin/tsc -p .",
+    "build": "make -C builder",
     "fixpack": "fixpack",
-    "prepack": "npm run build && npm test",
-    "test": "make test"
+    "prepare": "make -C builder clean all test",
+    "test": "make -C builder test"
   },
+  "sideEffects": false,
+  "type": "module",
   "types": "types/git-cat-file.d.ts"
 }

@@ -2,17 +2,19 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 import {promises as fs} from "fs";
 
-import {readPackIndex} from "./pack-idx";
-import {readPackedObject} from "./pack-obj";
-import {longCache} from "./cache";
-import type {ObjStore} from "./obj-store";
+import {readPackIndex} from "./pack-idx.ts";
+import {readPackedObject} from "./pack-obj.ts";
+import {longCache} from "./cache.ts";
+import type {ObjStore} from "./obj-store.ts";
 
 export class Pack {
-    constructor(protected readonly path: string) {
-        //
+    protected readonly path: string;
+
+    constructor(path: string) {
+        this.path = path;
     }
 
     private getIndex = longCache(() => readPackIndex(this.path));

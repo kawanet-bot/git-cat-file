@@ -11,7 +11,7 @@ test() {
   git $cmd $* | tee git-native.log || exit 1
   echo "" >&2
   echo "$ node git-$cmd-js $*" >&2
-  node ../../bin/git-$cmd-js $* | tee git-js.log || exit 2
+  node ../../bin/git-$cmd-js.ts $* | tee git-js.log || exit 2
   echo "" >&2
   diff git-native.log git-js.log || exit 3
 }

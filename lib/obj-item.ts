@@ -2,15 +2,18 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
-import type {ObjStore} from "./obj-store";
+import type {GCF} from "../types/git-cat-file.d.ts";
+import type {ObjStore} from "./obj-store.ts";
 
 export class ObjItem<IMeta> {
     private meta: { [key in keyof IMeta]: string[] };
     private message: string;
+    private readonly obj: GCF.IObject;
+    protected readonly store: ObjStore;
 
-    constructor(private readonly obj: GCF.IObject, protected readonly store: ObjStore) {
-        //
+    constructor(obj: GCF.IObject, store: ObjStore) {
+        this.obj = obj;
+        this.store = store;
     }
 
     getId(): string {
