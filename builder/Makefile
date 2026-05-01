@@ -48,7 +48,7 @@ $(CJS_DST): $(CJS_CONFIG) $(SRC)
 # 2. node:test mocha-replacement under test/*.test.ts
 test: all
 	../node_modules/.bin/tsc --noEmit
-	cd .. && rm -rf repo/ && sh test/repo1-prepare.sh && sh test/repo2-prepare.sh && sh test/repo3-prepare.sh
+	cd .. && rm -rf repo/ && sh test/repo1-prepare.sh && sh test/repo2-prepare.sh && sh test/repo3-prepare.sh && bash test/repo4-prepare.sh
 	cd .. && sh test/repo1-test.sh && sh test/repo2-test.sh && sh test/repo3-test.sh
 	cd .. && node --test test/*.test.ts
 
