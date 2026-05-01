@@ -27,7 +27,7 @@ Usage:
   git-rev-parse-js [-C path] <args>...
 ```
 
-The bundled CLI commands are also available as `git` subcommands when `node_modules/.bin` is on `$PATH`:
+The CLI commands shipped with the package are also available as `git` subcommands when `node_modules/.bin` is on `$PATH`:
 
 ```sh
 npm install git-cat-file
