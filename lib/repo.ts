@@ -2,11 +2,11 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
-import {Commit} from "./commit";
-import {Tree} from "./tree";
-import {ObjStore} from "./obj-store";
-import {Tag} from "./tag";
+import type {GCF} from "../types/git-cat-file.d.ts";
+import {Commit} from "./commit.ts";
+import {Tree} from "./tree.ts";
+import {ObjStore} from "./obj-store.ts";
+import {Tag} from "./tag.ts";
 
 const isObjectId = (oid: string) => (oid && /^[0-9a-f]{40}$/i.test(oid));
 const isLooseId = (oid: string) => (oid && /^[0-9a-f]{4,40}$/i.test(oid));

@@ -2,6 +2,8 @@
  * https://github.com/kawanet/git-cat-file
  */
 
+import processArgv from "process.argv";
+
 interface Options<L, S> {
     long: L;
     short: S;
@@ -9,7 +11,7 @@ interface Options<L, S> {
 }
 
 export function parseOptions<L extends object, S extends object>(input: Options<L, S>): Options<L, S> {
-    const argv = require("process.argv")(input.args)({});
+    const argv = processArgv(input.args)({}) as L & {"--"?: string[]};
     const args: string[] = argv["--"] || [];
 
     const shortDef = input.short;

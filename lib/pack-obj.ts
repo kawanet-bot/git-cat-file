@@ -4,19 +4,19 @@
  * @see https://github.com/git/git/blob/master/Documentation/technical/pack-format.txt
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 import {promises as fs} from "fs";
 import {inflateSync} from "zlib";
-import type {ObjStore} from "./obj-store";
+import type {ObjStore} from "./obj-store.ts";
 
-const enum TypeBit {
-    OBJ_COMMIT = 1,
-    OBJ_TREE = 2,
-    OBJ_BLOB = 3,
-    OBJ_TAG = 4,
-    OBJ_OFS_DELTA = 6,
-    OBJ_REF_DELTA = 7,
-}
+const TypeBit = {
+    OBJ_COMMIT: 1,
+    OBJ_TREE: 2,
+    OBJ_BLOB: 3,
+    OBJ_TAG: 4,
+    OBJ_OFS_DELTA: 6,
+    OBJ_REF_DELTA: 7,
+} as const;
 
 const typeNames: GCF.ObjType[] = [null, "commit", "tree", "blob", "tag"];
 const deltaTypes = {6: "OBJ_OFS_DELTA", 7: "OBJ_REF_DELTA"};

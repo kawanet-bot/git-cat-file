@@ -3,22 +3,20 @@
 [![Node.js CI](https://github.com/kawanet/git-cat-file/workflows/Node.js%20CI/badge.svg?branch=main)](https://github.com/kawanet/git-cat-file/actions/)
 [![npm version](https://img.shields.io/npm/v/git-cat-file)](https://www.npmjs.com/package/git-cat-file)
 
-Pure JavaScript `git cat-file -p` for node.js
+A pure-JavaScript implementation of `git cat-file -p` for Node.js.
 
 ## SYNOPSIS
 
 ```js
-const {openLocalRepo} = require("git-cat-file");
+import {openLocalRepo} from "git-cat-file";
 
-async function catFile(revision, path) {
-  const repo = openLocalRepo("repository/.git");
-  const commit = await repo.getCommit(revision);
-  const file = await commit.getFile(path);
-  process.stdout.write(file.data);
-}
-
-catFile("HEAD", "path/to/file.txt");
+const repo = openLocalRepo("repository/.git");
+const commit = await repo.getCommit("HEAD");
+const file = await commit.getFile("path/to/file.txt");
+process.stdout.write(file.data);
 ```
+
+See [types/git-cat-file.d.ts](https://github.com/kawanet/git-cat-file/blob/main/types/git-cat-file.d.ts) for the full type definitions and per-method documentation.
 
 ## CLI
 
@@ -29,11 +27,11 @@ Usage:
   git-rev-parse-js [-C path] <args>...
 ```
 
-Bundled CLI commands are also available via the `git` command. 
+The CLI commands shipped with the package are also available as `git` subcommands when `node_modules/.bin` is on `$PATH`:
 
 ```sh
 npm install git-cat-file
-export PATH=node_modules/.bin:$PATH
+export PATH="node_modules/.bin:$PATH"
 git cat-file-js [-t | -p] <object>
 git ls-tree-js [<options>] <tree-ish> [<path>...]
 git rev-parse-js <args>...

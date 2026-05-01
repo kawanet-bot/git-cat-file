@@ -2,13 +2,16 @@
 
 /**
  * https://github.com/kawanet/git-cat-file
+ *
+ * Executed directly by Node via its built-in TypeScript type-stripping
+ * (Node >= 22). No bundling step is involved for CLI entry points.
  */
 
-import type {GCF} from "..";
-import {openLocalRepo} from "..";
-import {promises as fs} from "fs";
+import {promises as fs} from "node:fs";
 
-import {parseOptions} from "../lib/cli-lib";
+import {parseOptions} from "../lib/cli-lib.ts";
+import {openLocalRepo} from "../lib/index.ts";
+import {showEnties, showEntry} from "../lib/show-tree.ts";
 
 const longParams = {
     help: true,
@@ -30,7 +33,7 @@ async function CLI(args: string[]) {
     const {C} = options.short;
     if (C) process.chdir(C);
 
-    if (await fs.readdir(".git").catch(_ => null)) {
+    if (await fs.readdir(".git").catch((): null => null)) {
         process.chdir(".git");
     }
 
@@ -76,29 +79,8 @@ async function CLI(args: string[]) {
     }
 }
 
-export async function showEnties(tree: GCF.Tree, path?: string) {
-    if (path) {
-        tree = await tree.getTree(path);
-    } else {
-        path = "";
-    }
-
-    let entries: GCF.Entry[] = await tree.getEntries();
-    entries = entries.slice().sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0);
-
-    for (const entry of entries) {
-        showEntry(entry, path);
-    }
-}
-
-function showEntry(entry: GCF.Entry, base: string) {
-    const {mode} = entry;
-    const typeName: GCF.ObjType = mode.isSubmodule ? "commit" : mode.isDirectory ? "tree" : "blob";
-    process.stdout.write(`${mode} ${typeName} ${entry.oid}\t${base}${entry.name}\n`);
-}
-
 function showHelp() {
     process.stderr.write(`  git-ls-tree-js [-C path] [<options>] <tree-ish> [<path>...]\n`);
 }
 
-if (!module.parent) CLI(process.argv.slice(2)).catch(console.error);
+CLI(process.argv.slice(2)).catch(console.error);

@@ -6,6 +6,8 @@
 .idea/
 .vscode/
 bin/**/*.js
+build/
+dist/
 lib/**/*.js
 node_modules/
 npm-debug.log*

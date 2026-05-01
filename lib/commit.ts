@@ -2,11 +2,11 @@
  * https://github.com/kawanet/git-cat-file
  */
 
-import type {GCF} from "..";
+import type {GCF} from "../types/git-cat-file.d.ts";
 
-import {Tree} from "./tree";
-import type {ObjStore} from "./obj-store";
-import {ObjItem} from "./obj-item";
+import {Tree} from "./tree.ts";
+import type {ObjStore} from "./obj-store.ts";
+import {ObjItem} from "./obj-item.ts";
 
 export class Commit extends ObjItem<GCF.CommitMeta> implements GCF.Commit {
     constructor(obj: GCF.IObject, store: ObjStore) {
