@@ -11,7 +11,8 @@ import {test} from "node:test";
 import {Commit} from "../lib/commit.ts";
 import type {GCF} from "../types/git-cat-file.d.ts";
 
-// 真の空行のみが header 終端、空白プレフィックス行は直前 header の継続。
+// Only a truly empty line ends the header section; space-prefixed lines
+// are RFC 822 continuations of the preceding header.
 const SIGNED_COMMIT = [
     "tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904",
     "parent 0123456789abcdef0123456789abcdef01234567",
@@ -49,7 +50,7 @@ const MERGE_WITH_MERGETAG = [
     "",
 ].join("\n");
 
-// parseMeta は store を一切触らないので null で良い。
+// parseMeta never touches the store, so a null is enough for these tests.
 const fakeStore = null as never;
 
 const buildCommit = (data: string): Commit => {
