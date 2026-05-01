@@ -16,6 +16,8 @@ const file = await commit.getFile("path/to/file.txt");
 process.stdout.write(file.data);
 ```
 
+See [types/git-cat-file.d.ts](https://github.com/kawanet/git-cat-file/blob/main/types/git-cat-file.d.ts) for the full type definitions and per-method documentation.
+
 ## CLI
 
 ```sh
