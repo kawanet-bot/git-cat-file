@@ -109,7 +109,7 @@ export class Ref {
 
     private async readPackedRefList(): Promise<RefCommit[]> {
         const list: RefCommit[] = [];
-        const text: string = await this.readTextFile(`packed-refs`).catch(_ => null);
+        const text: string = await this.readTextFile(`packed-refs`).catch((): null => null);
         if (!text) return list;
 
         const lines = text.split(/\r?\n/).filter(s => /^\w/.test(s));
@@ -123,25 +123,25 @@ export class Ref {
     private async searchRef(ref: string): Promise<string> {
         // .git/HEAD
         if (/HEAD$/.test(ref)) {
-            const commit = await this.readFirstLine(ref).catch(_ => null);
+            const commit = await this.readFirstLine(ref).catch((): null => null);
             if (commit) return commit;
         }
 
         // .git/refs/heads/main
         {
-            const commit = await this.findRef(`refs/heads/${ref}`).catch(_ => null);
+            const commit = await this.findRef(`refs/heads/${ref}`).catch((): null => null);
             if (commit) return commit;
         }
 
         // .git/refs/tags/xxxx
         {
-            const commit = await this.findRef(`refs/tags/${ref}`).catch(_ => null);
+            const commit = await this.findRef(`refs/tags/${ref}`).catch((): null => null);
             if (commit) return commit;
         }
 
         // .git/refs/remotes/xxxx
         {
-            const commit = await this.findRef(`refs/remotes/${ref}`).catch(_ => null);
+            const commit = await this.findRef(`refs/remotes/${ref}`).catch((): null => null);
             if (commit) return commit;
         }
     }
@@ -157,7 +157,7 @@ export class Ref {
     }
 
     private async readFirstLine(name: string): Promise<string> {
-        const text: string = await this.readTextFile(name).catch(_ => null);
+        const text: string = await this.readTextFile(name).catch((): null => null);
         if (text) return text.split(/\r?\n/).filter(s => /^[^#\s]/.test(s)).shift();
     }
 

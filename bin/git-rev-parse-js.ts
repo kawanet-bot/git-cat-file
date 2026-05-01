@@ -29,7 +29,7 @@ async function CLI(args: string[]) {
     const {C} = options.short;
     if (C) process.chdir(C);
 
-    if (await fs.readdir(".git").catch(_ => null)) {
+    if (await fs.readdir(".git").catch((): null => null)) {
         process.chdir(".git");
     }
 

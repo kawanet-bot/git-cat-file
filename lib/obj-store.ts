@@ -85,7 +85,7 @@ export class ObjStore {
         const base = `${this.root}/objects/pack/`;
 
         // console.warn(`readdir: ${base}`);
-        let names: string[] = await fs.readdir(base).catch(_ => null);
+        let names: string[] = await fs.readdir(base).catch((): null => null);
         if (!names) return;
 
         names = names.filter(name => /^pack-.*\.pack$/.test(name));

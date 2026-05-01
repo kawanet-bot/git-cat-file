@@ -20,7 +20,7 @@ export class Loose {
         const first = object_id.slice(0, 2);
         const rest = object_id.slice(2);
         const {length} = rest;
-        const files: string[] = await this.readdir(first).catch(_ => null);
+        const files: string[] = await this.readdir(first).catch((): null => null);
         if (!files) return;
         return files.filter(name => name.slice(0, length) === rest).map(name => (first + name));
     }
