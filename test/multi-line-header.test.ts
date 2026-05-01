@@ -74,7 +74,7 @@ test("gpgsig: the full signature block is recovered as a single header value", (
         "-----END SSH SIGNATURE-----",
     ].join("\n");
 
-    assert.equal(commit.getMeta("gpgsig" as never), expected);
+    assert.equal(commit.getMeta("gpgsig"), expected);
 });
 
 test("gpgsig: single-line headers around the signature are unaffected", () => {
@@ -101,7 +101,7 @@ test("mergetag: the embedded tag object is recovered as a single header value", 
         "-----END SSH SIGNATURE-----",
     ].join("\n");
 
-    assert.equal(commit.getMeta("mergetag" as never), expected);
+    assert.equal(commit.getMeta("mergetag"), expected);
 });
 
 test("mergetag: the merge commit's own message is just the merge subject", () => {

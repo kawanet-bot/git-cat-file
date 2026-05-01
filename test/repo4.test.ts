@@ -44,7 +44,7 @@ describe(TITLE, {skip: !existsSync(`${REPO}/.git`) && "repo/repo4 not built — 
 
         assert.equal(commit.getMessage(), "signed empty\n");
 
-        const sig = commit.getMeta("gpgsig" as never);
+        const sig = commit.getMeta("gpgsig");
         assert.ok(sig?.startsWith(SSH_BEGIN), `gpgsig should start with ${SSH_BEGIN}`);
         assert.ok(sig?.endsWith(SSH_END), `gpgsig should end with ${SSH_END}`);
         assert.ok(sig?.split("\n").length >= 4, "gpgsig should span multiple lines");
@@ -53,12 +53,13 @@ describe(TITLE, {skip: !existsSync(`${REPO}/.git`) && "repo/repo4 not built — 
     it(`signed normal commit: body and signature are cleanly separated`, async () => {
         // The "Foo" commit sits one above the root (HEAD~2 in the merge layout).
         const head = await repo.getCommit("HEAD");
-        const [mainParent] = await head.getParents();
-        const fooCommit = mainParent;
+        const parents = await head.getParents();
+        assert.ok(parents?.length, "HEAD should have at least one parent in the merge fixture");
+        const fooCommit = parents[0];
 
         assert.equal(fooCommit.getMessage(), "Foo\n");
 
-        const sig = fooCommit.getMeta("gpgsig" as never);
+        const sig = fooCommit.getMeta("gpgsig");
         assert.ok(sig?.startsWith(SSH_BEGIN));
         assert.ok(sig?.endsWith(SSH_END));
 
@@ -74,7 +75,7 @@ describe(TITLE, {skip: !existsSync(`${REPO}/.git`) && "repo/repo4 not built — 
         const parents = await merge.getParents();
         assert.equal(parents.length, 2);
 
-        const tagBlock = merge.getMeta("mergetag" as never);
+        const tagBlock = merge.getMeta("mergetag");
         assert.ok(tagBlock, "mergetag header should be present");
         assert.match(tagBlock, /^object [0-9a-f]{40}\ntype commit\ntag v1\n/);
         assert.ok(tagBlock.includes("\ntag v1 message\n"), "tag message should be preserved");
@@ -82,7 +83,7 @@ describe(TITLE, {skip: !existsSync(`${REPO}/.git`) && "repo/repo4 not built — 
         assert.ok(tagBlock.endsWith(SSH_END), "mergetag block should end with the signature trailer");
 
         // The merge commit itself is also signed.
-        const sig = merge.getMeta("gpgsig" as never);
+        const sig = merge.getMeta("gpgsig");
         assert.ok(sig?.startsWith(SSH_BEGIN));
         assert.ok(sig?.endsWith(SSH_END));
     });

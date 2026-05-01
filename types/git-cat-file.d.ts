@@ -143,6 +143,18 @@ export declare namespace GCF {
         author: string;
         committer: string;
         encoding: string;
+        /**
+         * Detached signature line(s). Returned as-is, with continuation
+         * lines joined by `\n` and the leading space stripped, so the
+         * value matches the original `-----BEGIN ... -----` block.
+         */
+        gpgsig: string;
+        /**
+         * The embedded annotated-tag object on a merge commit produced by
+         * merging an annotated tag. Continuation lines are joined the
+         * same way as `gpgsig`.
+         */
+        mergetag: string;
     }
 
     /**
@@ -153,6 +165,8 @@ export declare namespace GCF {
         type: string;
         tagger: string;
         tag: string;
+        /** See `CommitMeta.gpgsig`. Annotated tags can be SSH/GPG signed too. */
+        gpgsig: string;
     }
 
     /**

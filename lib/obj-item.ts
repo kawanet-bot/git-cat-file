@@ -24,7 +24,10 @@ export class ObjItem<IMeta> {
         if (this.meta) return;
 
         const {data} = this.obj;
-        const meta = this.meta = {} as { [key in keyof IMeta]: string[] };
+        // Object.create(null) keeps an attacker-crafted header key like
+        // `__proto__` or `constructor` from colliding with the prototype
+        // chain when we read `meta[key]` back.
+        const meta = this.meta = Object.create(null) as { [key in keyof IMeta]: string[] };
         const lines = data.toString().split(/\r?\n/);
         let headerMode = true;
         let lastKey: keyof IMeta;
