@@ -27,20 +27,34 @@ export class ObjItem<IMeta> {
         const meta = this.meta = {} as { [key in keyof IMeta]: string[] };
         const lines = data.toString().split(/\r?\n/);
         let headerMode = true;
+        let lastKey: keyof IMeta;
         let message: string;
 
         for (const line of lines) {
             if (headerMode) {
-                const [key, val] = splitBySpace(line) as [keyof IMeta, string];
-                if (meta[key]) {
-                    meta[key].push(val)
-                } else if (key) {
-                    meta[key] = [val];
-                } else {
+                // A truly empty line ends the header section. RFC 822-style
+                // continuation lines start with a single space and append to
+                // the previous header's last value (used by `gpgsig` and
+                // `mergetag` in commit objects).
+                if (line === "") {
                     headerMode = false;
+                    continue;
                 }
+                if (line.startsWith(" ") && lastKey) {
+                    const arr = meta[lastKey];
+                    arr[arr.length - 1] += "\n" + line.slice(1);
+                    continue;
+                }
+                const [key, val] = splitBySpace(line) as [keyof IMeta, string];
+                if (!key) continue;
+                if (meta[key]) {
+                    meta[key].push(val);
+                } else {
+                    meta[key] = [val];
+                }
+                lastKey = key;
             } else {
-                if (message) {
+                if (message != null) {
                     message += "\n" + line;
                 } else {
                     message = line;
