@@ -8,16 +8,12 @@ A pure-JavaScript implementation of `git cat-file -p` for Node.js.
 ## SYNOPSIS
 
 ```js
-const {openLocalRepo} = require("git-cat-file");
+import {openLocalRepo} from "git-cat-file";
 
-async function catFile(revision, path) {
-  const repo = openLocalRepo("repository/.git");
-  const commit = await repo.getCommit(revision);
-  const file = await commit.getFile(path);
-  process.stdout.write(file.data);
-}
-
-catFile("HEAD", "path/to/file.txt");
+const repo = openLocalRepo("repository/.git");
+const commit = await repo.getCommit("HEAD");
+const file = await commit.getFile("path/to/file.txt");
+process.stdout.write(file.data);
 ```
 
 ## CLI
