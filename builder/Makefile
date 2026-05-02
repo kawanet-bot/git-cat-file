@@ -1,7 +1,7 @@
-SRC := $(wildcard ../lib/*.ts ../types/*.ts)
+SRC   := $(wildcard ../lib/*.ts)
+TYPES := $(wildcard ../types/*.d.ts)
 BUILDER_SRC := $(wildcard ./*.ts)
 
-PKG_DST := ../dist/package.json
 MJS_DST := ../dist/git-cat-file.mjs
 CJS_DST := ../dist/git-cat-file.cjs
 
@@ -16,17 +16,13 @@ MAX_BYTES := 30000
 # CLI entry points under bin/*.ts are executed directly by Node via the
 # built-in TypeScript type-stripping (Node >= 22). They do not need to be
 # bundled, so they are not part of $(ALL).
-ALL := $(MJS_DST) $(CJS_DST) $(PKG_DST)
+NAMED_EXPORTS := openLocalRepo
+
+ALL := $(MJS_DST) $(CJS_DST)
 
 ####
 
 all: $(ALL)
-
-$(PKG_DST):
-	@mkdir -p $(dir $@)
-	echo '{"type":"commonjs"}' > $@
-	@ls -l $@
-	@echo ""
 
 $(MJS_DST): $(MJS_CONFIG) $(SRC) $(BUILDER_SRC)
 	@mkdir -p $(dir $@)
@@ -42,12 +38,25 @@ $(CJS_DST): $(CJS_CONFIG) $(SRC) $(BUILDER_SRC)
 	@ls -l $@
 	@echo ""
 
+# Verify the bundles by importing/requiring the package itself.
+# This ensures that the public entrypoints (exports/main) are correctly configured.
+# Note: process.argv.slice(1) is used because node -e 'code' arg1 arg2
+# results in process.argv = ['node', 'arg1', 'arg2'].
+smoke: all
+	@# MJS smoke test via public entrypoint
+	cd .. && node --input-type=module -e 'const m = await import("git-cat-file"); for (const k of process.argv.slice(1)) { if (typeof m[k] !== "function") { console.error("missing MJS export:", k); process.exit(1); } console.log("MJS export OK:", k); }' $(NAMED_EXPORTS)
+	@# CJS smoke test via public entrypoint
+	cd .. && node --input-type=commonjs -e 'const m = require("git-cat-file"); for (const k of process.argv.slice(1)) { if (typeof m[k] !== "function") { console.error("missing CJS export:", k); process.exit(1); } console.log("CJS export OK:", k); }' $(NAMED_EXPORTS)
+
 ####
 
-# Build, type-check, and run the full test matrix:
-# 1. shell-based round-trip tests (invoke `node bin/<cli>.ts ...`)
-# 2. node:test mocha-replacement under test/*.test.ts
-test: all
+# Build, run smoke tests, and conditionally run full tests (tsc and node:test).
+test: all smoke $(TYPES)
+	@node -v | grep -qv "^v20" || echo "Node 20 detected: skipping full tests."
+	@ [ "$$npm_command" != "install" ] || echo "npm install detected: skipping full tests."
+	@node -v | grep -q "^v20" || [ "$$npm_command" = "install" ] || $(MAKE) test-ts
+
+test-ts:
 	../node_modules/.bin/tsc --noEmit
 	cd .. && rm -rf repo/ && sh test/repo1-prepare.sh && sh test/repo2-prepare.sh && sh test/repo3-prepare.sh && bash test/repo4-prepare.sh
 	cd .. && sh test/repo1-test.sh && sh test/repo2-test.sh && sh test/repo3-test.sh
@@ -56,4 +65,4 @@ test: all
 clean:
 	/bin/rm -fr $(ALL)
 
-.PHONY: all clean test
+.PHONY: all clean test smoke test-ts
