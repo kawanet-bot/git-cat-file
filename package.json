@@ -1,7 +1,7 @@
 {
   "name": "git-cat-file",
   "description": "A pure-JavaScript implementation of `git cat-file -p` for Node.js.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "author": "@kawanet",
   "bin": {
     "git-cat-file-js": "bin/git-cat-file-js.ts",
@@ -12,14 +12,14 @@
     "url": "https://github.com/kawanet/git-cat-file/issues"
   },
   "dependencies": {
-    "async-cache-queue": "^0.2.6",
-    "process.argv": "^0.6.1"
+    "async-cache-queue": "^0.2.8",
+    "process.argv": "^1.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.2",
-    "@rollup/plugin-sucrase": "^5.0.2",
-    "@types/node": "^24.0.0",
-    "rollup": "^4.52.4",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-sucrase": "^5.1.0",
+    "@types/node": "^24.12.2",
+    "rollup": "^4.60.2",
     "typescript": "^5.9.3"
   },
   "devEngines": {
