@@ -34,11 +34,9 @@
   },
   "exports": {
     ".": {
+      "types": "./types/git-cat-file.d.ts",
       "require": "./dist/git-cat-file.cjs",
-      "import": {
-        "types": "./types/git-cat-file.d.ts",
-        "default": "./dist/git-cat-file.mjs"
-      }
+      "import": "./dist/git-cat-file.mjs"
     }
   },
   "files": [
