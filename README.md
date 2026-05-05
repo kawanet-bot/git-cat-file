@@ -1,6 +1,6 @@
 # git-cat-file
 
-[![Node.js CI](https://github.com/kawanet/git-cat-file/workflows/Node.js%20CI/badge.svg?branch=main)](https://github.com/kawanet/git-cat-file/actions/)
+[![Node.js CI](https://github.com/kawanet/git-cat-file/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/kawanet/git-cat-file/actions/)
 [![npm version](https://img.shields.io/npm/v/git-cat-file)](https://www.npmjs.com/package/git-cat-file)
 
 A pure-JavaScript implementation of `git cat-file -p` for Node.js.
