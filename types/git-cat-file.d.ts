@@ -5,6 +5,8 @@
  * implementation of `git cat-file -p` for Node.js.
  */
 
+export {} // external module indicator
+
 export declare namespace GCF {
     /**
      * The four object types stored in a Git object database. Returned in
